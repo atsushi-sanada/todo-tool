@@ -1,0 +1,30 @@
+# Git除外設定
+
+## OS固有ファイル
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## エディタ・IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+## ログファイル
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## 依存関係（今後追加する場合）
+node_modules/
+package-lock.json
+yarn.lock
+
+## 一時ファイル
+*.tmp
+*.temp
+.cache/
+

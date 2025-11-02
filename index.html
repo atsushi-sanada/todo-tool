@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="シンプルで使いやすいTODOアプリケーション">
+  <title>TODOアプリ</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>TODOアプリ</h1>
+    </header>
+    <main>
+      <!-- タスク追加フォーム -->
+      <section class="task-form-section">
+        <h2>新しいタスクを追加</h2>
+        <form id="taskForm" aria-label="タスク追加フォーム">
+          <div class="form-group">
+            <label for="taskTitle">タイトル <span class="required">*</span></label>
+            <input type="text" id="taskTitle" name="title" required maxlength="100" aria-required="true">
+          </div>
+          <div class="form-group">
+            <label for="taskDescription">説明</label>
+            <textarea id="taskDescription" name="description" rows="3" maxlength="500"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">追加</button>
+        </form>
+      </section>
+
+      <!-- タスク一覧 -->
+      <section class="task-list-section">
+        <h2>タスク一覧</h2>
+        <div id="taskList" class="task-list" role="list" aria-label="タスク一覧">
+          <!-- タスクカードがここに動的に追加されます -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- タスク編集モーダル -->
+  <div id="editModal" class="modal" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="editModalTitle">タスクを編集</h2>
+        <button class="modal-close" aria-label="モーダルを閉じる">&times;</button>
+      </div>
+      <form id="editForm">
+        <div class="form-group">
+          <label for="editTitle">タイトル <span class="required">*</span></label>
+          <input type="text" id="editTitle" name="title" required maxlength="100" aria-required="true">
+        </div>
+        <div class="form-group">
+          <label for="editDescription">説明</label>
+          <textarea id="editDescription" name="description" rows="3" maxlength="500"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-secondary" id="cancelEdit">キャンセル</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 削除確認ダイアログ -->
+  <div id="deleteDialog" class="modal" role="dialog" aria-labelledby="deleteDialogTitle" aria-hidden="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="deleteDialogTitle">タスクの削除</h2>
+      </div>
+      <p>このタスクを削除してもよろしいですか？</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger" id="confirmDelete">削除</button>
+        <button type="button" class="btn btn-secondary" id="cancelDelete">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
+
