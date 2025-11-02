@@ -18,14 +18,16 @@
         <h2>新しいタスクを追加</h2>
         <form id="taskForm" aria-label="タスク追加フォーム">
           <div class="form-group">
-            <label for="taskTitle">タイトル <span class="required">*</span></label>
-            <input type="text" id="taskTitle" name="title" required maxlength="100" aria-required="true">
+            <label for="taskTitle">タイトル <span class="required" aria-label="必須項目">*</span></label>
+            <input type="text" id="taskTitle" name="title" required maxlength="100" aria-required="true" aria-describedby="taskTitleHint">
+            <span id="taskTitleHint" class="visually-hidden">タスクのタイトルを入力してください（1-100文字）</span>
           </div>
           <div class="form-group">
             <label for="taskDescription">説明</label>
-            <textarea id="taskDescription" name="description" rows="3" maxlength="500"></textarea>
+            <textarea id="taskDescription" name="description" rows="3" maxlength="500" aria-describedby="taskDescriptionHint"></textarea>
+            <span id="taskDescriptionHint" class="visually-hidden">タスクの説明を入力してください（最大500文字、任意）</span>
           </div>
-          <button type="submit" class="btn btn-primary">追加</button>
+          <button type="submit" class="btn btn-primary" aria-label="新しいタスクを追加する">追加</button>
         </form>
       </section>
 
@@ -34,26 +36,46 @@
         <h2>タスク一覧</h2>
         <div id="taskList" class="task-list" role="list" aria-label="タスク一覧">
           <!-- タスクカードがここに動的に追加されます -->
+          <!-- 
+            タスクカードの構造（JavaScriptで動的に生成）:
+            <div class="task-card" role="listitem" data-task-id="...">
+              <div class="task-card-header">
+                <input type="checkbox" class="task-checkbox" aria-label="完了状態を切り替え">
+                <h3 class="task-title">タイトル</h3>
+              </div>
+              <p class="task-description">説明</p>
+              <div class="task-card-footer">
+                <time class="task-date">作成日時</time>
+                <div class="task-actions">
+                  <button class="btn btn-edit" aria-label="タスクを編集">編集</button>
+                  <button class="btn btn-delete" aria-label="タスクを削除">削除</button>
+                </div>
+              </div>
+            </div>
+          -->
         </div>
       </section>
     </main>
   </div>
 
   <!-- タスク編集モーダル -->
-  <div id="editModal" class="modal" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+  <div id="editModal" class="modal" role="dialog" aria-labelledby="editModalTitle" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop" aria-hidden="true"></div>
     <div class="modal-content">
       <div class="modal-header">
         <h2 id="editModalTitle">タスクを編集</h2>
-        <button class="modal-close" aria-label="モーダルを閉じる">&times;</button>
+        <button type="button" class="modal-close" aria-label="モーダルを閉じる">&times;</button>
       </div>
-      <form id="editForm">
+      <form id="editForm" aria-label="タスク編集フォーム">
         <div class="form-group">
-          <label for="editTitle">タイトル <span class="required">*</span></label>
-          <input type="text" id="editTitle" name="title" required maxlength="100" aria-required="true">
+          <label for="editTitle">タイトル <span class="required" aria-label="必須項目">*</span></label>
+          <input type="text" id="editTitle" name="title" required maxlength="100" aria-required="true" aria-describedby="editTitleHint">
+          <span id="editTitleHint" class="visually-hidden">タスクのタイトルを入力してください（1-100文字）</span>
         </div>
         <div class="form-group">
           <label for="editDescription">説明</label>
-          <textarea id="editDescription" name="description" rows="3" maxlength="500"></textarea>
+          <textarea id="editDescription" name="description" rows="3" maxlength="500" aria-describedby="editDescriptionHint"></textarea>
+          <span id="editDescriptionHint" class="visually-hidden">タスクの説明を入力してください（最大500文字）</span>
         </div>
         <div class="modal-actions">
           <button type="submit" class="btn btn-primary">保存</button>
@@ -64,15 +86,16 @@
   </div>
 
   <!-- 削除確認ダイアログ -->
-  <div id="deleteDialog" class="modal" role="dialog" aria-labelledby="deleteDialogTitle" aria-hidden="true">
+  <div id="deleteDialog" class="modal" role="dialog" aria-labelledby="deleteDialogTitle" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop" aria-hidden="true"></div>
     <div class="modal-content">
       <div class="modal-header">
         <h2 id="deleteDialogTitle">タスクの削除</h2>
       </div>
-      <p>このタスクを削除してもよろしいですか？</p>
+      <p id="deleteDialogMessage">このタスクを削除してもよろしいですか？</p>
       <div class="modal-actions">
-        <button type="button" class="btn btn-danger" id="confirmDelete">削除</button>
-        <button type="button" class="btn btn-secondary" id="cancelDelete">キャンセル</button>
+        <button type="button" class="btn btn-danger" id="confirmDelete" aria-label="タスクを削除する">削除</button>
+        <button type="button" class="btn btn-secondary" id="cancelDelete" aria-label="削除をキャンセルする">キャンセル</button>
       </div>
     </div>
   </div>
