@@ -1,0 +1,114 @@
+# コミットメッセージ修正用の正しいメッセージ一覧
+
+# Story 1
+Story1 = "Story 1: プロジェクト基盤のセットアップ
+
+- フォルダ構造の作成（css/、js/）
+- index.htmlの基本構造作成
+- .gitignoreの作成
+- README.mdの作成"
+
+# Story 2
+Story2 = "Story 2: データ永続化機能の実装（StorageManager）
+
+- StorageManagerクラスの作成
+- save()メソッドの実装（エラーハンドリング含む）
+- load()メソッドの実装（エラーハンドリング含む）
+- clear()メソッドの実装
+- LocalStorageの利用可能性チェック機能を追加"
+
+# Story 3
+Story3 = "Story 3: 入力値検証機能の実装（Validator）
+
+- Validatorクラスの作成
+- validateTitle()メソッドの実装（1-100文字、必須チェック）
+- validateDescription()メソッドの実装（最大500文字、任意）
+- sanitize()メソッドの実装（XSS対策・HTMLエスケープ）
+- sanitizeForTextContent()メソッドの実装（textContent用）"
+
+# Story 4
+Story4 = "Story 4: タスク管理機能の実装（TaskManager）
+
+- TaskManagerクラスの作成
+- addTask()メソッドの実装（UUID生成、日時設定含む）
+- getTasks()メソッドの実装
+- getTaskById()メソッドの実装
+- updateTask()メソッドの実装（作成日時・更新日時管理）
+- deleteTask()メソッドの実装
+- toggleTask()メソッドの実装
+- UUID生成関数の実装（generateUUID）
+- データバージョン管理機能の実装"
+
+# Story 5
+Story5 = "Story 5: HTML構造の実装
+
+- ARIA属性の追加と改善（aria-modal, aria-describedby, aria-label等）
+- タスクカード構造のコメント追加（JavaScript実装時の参考用）
+- モーダルのバックドロップ要素追加
+- 視覚的に隠されたヒントテキスト追加（スクリーンリーダー対応）
+- セマンティックHTMLの最適化
+- アクセシビリティの向上"
+
+# Story 6
+Story6 = "Story 6: CSSスタイルの実装
+
+- リセットCSSの実装
+- 基本レイアウトの実装（コンテナ、ヘッダー、メイン）
+- タスク追加フォームのスタイル
+- タスクカードのスタイル（完了状態の視覚的区別含む）
+- モーダルのスタイル（アニメーション含む）
+- ダイアログのスタイル
+- レスポンシブブレークポイントの実装（スマートフォン・タブレット・デスクトップ）
+- アニメーション・トランジションの実装
+- アクセシビリティに配慮したスタイル（フォーカス表示、コントラスト対応）
+- モダンなフラットデザインの適用"
+
+# Story 7
+Story7 = "Story 7: UI更新機能の実装（UIUpdater）
+
+- UIUpdaterクラスの作成
+- renderTasks()メソッドの実装（ソート機能含む）
+- addTaskCard()メソッドの実装
+- updateTaskCard()メソッドの実装
+- removeTaskCard()メソッドの実装
+- clearForm()メソッドの実装
+- showModal()メソッドの実装（フォーカス管理含む）
+- hideModal()メソッドの実装
+- showConfirmDialog()メソッドの実装（Promise返却）
+- showError()メソッドの実装
+- HTMLエスケープ処理の実装（XSS対策）
+- 日付フォーマット機能の実装
+- ESCキー・バックドロップクリックでのモーダル閉じる機能
+- アクセシビリティ対応（ARIA属性、フォーカス管理）"
+
+# Story 8
+Story8 = "Story 8: メインアプリケーションの統合（main.js）
+
+- 各モジュールのインポート（StorageManager, Validator, TaskManager, UIUpdater）
+- TodoAppクラスの作成
+- アプリケーション初期化処理の実装
+- イベントハンドラーの実装
+  - タスク追加フォームのsubmitイベント
+  - タスクカードのチェックボックスクリックイベント（イベントデリゲーション）
+  - タスクカードの編集ボタンクリックイベント（イベントデリゲーション）
+  - タスクカードの削除ボタンクリックイベント（イベントデリゲーション）
+  - モーダルの保存ボタンクリックイベント
+  - モーダルのキャンセルボタンクリックイベント
+- ページ読み込み時の処理実装（DOMContentLoaded）
+- エラーハンドリングの実装
+- LocalStorage利用可能性チェック
+- バリデーションとサニタイズ処理の統合"
+
+# Story 9
+Story9 = "Story 9: 機能統合テストと動作確認
+
+- テスト計画書の作成（.cursor_workflow/test-plan.md）
+- README.mdにテスト方法を追加
+- 全機能テストケースの定義
+- エラーハンドリングテストの定義
+- レスポンシブデザインテストの定義
+- パフォーマンステストの定義
+- セキュリティテスト（XSS対策）の定義
+- アクセシビリティテストの定義
+- ブラウザ互換性テストの定義"
+
