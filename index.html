@@ -1,84 +1,194 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="シンプルで使いやすいTODOアプリケーション">
-  <title>TODOアプリ</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>TODOアプリ</h1>
-    </header>
-    <main>
-      <!-- タスク追加フォーム -->
-      <section class="task-form-section">
-        <h2>新しいタスクを追加</h2>
-        <form id="taskForm" aria-label="タスク追加フォーム">
-          <div class="form-group">
-            <label for="taskTitle">タイトル <span class="required">*</span></label>
-            <input type="text" id="taskTitle" name="title" required maxlength="100" aria-required="true">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="Cacooライクな図表編集Webアプリ。図形作成、接続、保存、読込、エクスポートに対応。"
+    >
+    <title>Diagram Board</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1>Diagram Board</h1>
+          <p>Cacooライク図表エディタ（ローカル完結版）</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="newBoardButton" type="button">新規</button>
+          <button id="saveButton" type="button">保存</button>
+          <button id="loadButton" type="button">読込</button>
+          <button id="exportJsonButton" type="button">JSON出力</button>
+          <button id="exportPngButton" type="button">PNG出力</button>
+          <input
+            id="importFileInput"
+            type="file"
+            accept=".json,application/json"
+            hidden
+          >
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="tool-panel" aria-label="ツールパネル">
+          <h2>ツール</h2>
+          <div class="tool-grid" id="toolButtonGroup">
+            <button data-tool="select" class="is-active" type="button">
+              選択
+            </button>
+            <button data-tool="rectangle" type="button">四角形</button>
+            <button data-tool="ellipse" type="button">円</button>
+            <button data-tool="note" type="button">ノート</button>
+            <button data-tool="connect" type="button">接続</button>
           </div>
-          <div class="form-group">
-            <label for="taskDescription">説明</label>
-            <textarea id="taskDescription" name="description" rows="3" maxlength="500"></textarea>
+          <p class="tool-help">
+            Space + ドラッグでキャンバス移動 /
+            ホイールでズーム
+          </p>
+        </aside>
+
+        <main class="canvas-panel">
+          <div class="canvas-header">
+            <p id="statusText" aria-live="polite">準備完了</p>
+            <div class="zoom-controls">
+              <label for="zoomRange">ズーム</label>
+              <input
+                id="zoomRange"
+                type="range"
+                min="40"
+                max="300"
+                value="100"
+              >
+              <span id="zoomLabel">100%</span>
+              <button id="resetViewButton" type="button">ビュー初期化</button>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary">追加</button>
-        </form>
-      </section>
 
-      <!-- タスク一覧 -->
-      <section class="task-list-section">
-        <h2>タスク一覧</h2>
-        <div id="taskList" class="task-list" role="list" aria-label="タスク一覧">
-          <!-- タスクカードがここに動的に追加されます -->
-        </div>
-      </section>
-    </main>
-  </div>
+          <div class="canvas-wrapper" id="canvasWrapper">
+            <svg id="diagramSvg" aria-label="図表編集キャンバス">
+              <defs>
+                <pattern
+                  id="smallGrid"
+                  width="20"
+                  height="20"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path
+                    d="M 20 0 L 0 0 0 20"
+                    fill="none"
+                    stroke="#dbeafe"
+                    stroke-width="1"
+                  ></path>
+                </pattern>
+                <pattern
+                  id="grid"
+                  width="100"
+                  height="100"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <rect
+                    width="100"
+                    height="100"
+                    fill="url(#smallGrid)"
+                  ></rect>
+                  <path
+                    d="M 100 0 L 0 0 0 100"
+                    fill="none"
+                    stroke="#93c5fd"
+                    stroke-width="1.5"
+                  ></path>
+                </pattern>
+                <marker
+                  id="arrowHead"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="8"
+                  markerHeight="8"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937"></path>
+                </marker>
+              </defs>
 
-  <!-- タスク編集モーダル -->
-  <div id="editModal" class="modal" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="editModalTitle">タスクを編集</h2>
-        <button class="modal-close" aria-label="モーダルを閉じる">&times;</button>
+              <rect
+                id="canvasGrid"
+                x="-5000"
+                y="-5000"
+                width="10000"
+                height="10000"
+                fill="url(#grid)"
+              ></rect>
+              <g id="viewportGroup">
+                <g id="edgeLayer"></g>
+                <g id="nodeLayer"></g>
+              </g>
+            </svg>
+          </div>
+        </main>
+
+        <aside class="properties-panel">
+          <h2>プロパティ</h2>
+          <p id="selectionInfo">選択中: なし</p>
+          <form id="propertiesForm">
+            <label for="propLabel">ラベル</label>
+            <textarea id="propLabel" rows="3" maxlength="120"></textarea>
+
+            <div class="prop-grid">
+              <div>
+                <label for="propX">X</label>
+                <input id="propX" type="number" step="1">
+              </div>
+              <div>
+                <label for="propY">Y</label>
+                <input id="propY" type="number" step="1">
+              </div>
+            </div>
+
+            <div class="prop-grid">
+              <div>
+                <label for="propWidth">幅</label>
+                <input id="propWidth" type="number" step="1" min="40">
+              </div>
+              <div>
+                <label for="propHeight">高さ</label>
+                <input id="propHeight" type="number" step="1" min="30">
+              </div>
+            </div>
+
+            <div class="prop-grid">
+              <div>
+                <label for="propFill">塗り</label>
+                <input id="propFill" type="color">
+              </div>
+              <div>
+                <label for="propStroke">線</label>
+                <input id="propStroke" type="color">
+              </div>
+            </div>
+
+            <button id="applyPropertiesButton" type="submit">適用</button>
+          </form>
+
+          <section class="shortcuts">
+            <h3>ショートカット</h3>
+            <ul>
+              <li>Delete: 選択要素を削除</li>
+              <li>Ctrl/Cmd + Z: 元に戻す</li>
+              <li>Ctrl/Cmd + Y: やり直し</li>
+              <li>Ctrl/Cmd + S: ローカル保存</li>
+            </ul>
+          </section>
+        </aside>
       </div>
-      <form id="editForm">
-        <div class="form-group">
-          <label for="editTitle">タイトル <span class="required">*</span></label>
-          <input type="text" id="editTitle" name="title" required maxlength="100" aria-required="true">
-        </div>
-        <div class="form-group">
-          <label for="editDescription">説明</label>
-          <textarea id="editDescription" name="description" rows="3" maxlength="500"></textarea>
-        </div>
-        <div class="modal-actions">
-          <button type="submit" class="btn btn-primary">保存</button>
-          <button type="button" class="btn btn-secondary" id="cancelEdit">キャンセル</button>
-        </div>
-      </form>
     </div>
-  </div>
 
-  <!-- 削除確認ダイアログ -->
-  <div id="deleteDialog" class="modal" role="dialog" aria-labelledby="deleteDialogTitle" aria-hidden="true">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="deleteDialogTitle">タスクの削除</h2>
-      </div>
-      <p>このタスクを削除してもよろしいですか？</p>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-danger" id="confirmDelete">削除</button>
-        <button type="button" class="btn btn-secondary" id="cancelDelete">キャンセル</button>
-      </div>
-    </div>
-  </div>
+    <div id="toast" aria-live="polite"></div>
 
-  <!-- JavaScript -->
-  <script type="module" src="js/main.js"></script>
-</body>
+    <script type="module" src="./main.js"></script>
+  </body>
 </html>
 
