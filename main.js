@@ -837,8 +837,6 @@ class DiagramApp {
       this.dom.svg.releasePointerCapture(event.pointerId);
       if (this.dragState.moved) {
         this.store.commitFromSnapshot(this.dragState.beforeState);
-      } else {
-        this.store.replaceState(this.dragState.beforeState);
       }
 
       this.dragState = null;
@@ -1168,12 +1166,15 @@ class DiagramApp {
    * @param {KeyboardEvent} event キーボードイベント。
    */
   _onKeyDown(event) {
+    const isInputTarget = this._isInputTarget(event.target);
+
     if (event.key === ' ') {
-      this.spacePressed = true;
+      if (!isInputTarget) {
+        this.spacePressed = true;
+      }
       return;
     }
 
-    const isInputTarget = this._isInputTarget(event.target);
     const withMeta = event.ctrlKey || event.metaKey;
 
     if (withMeta && event.key.toLowerCase() === 's') {
@@ -1461,16 +1462,17 @@ class DiagramApp {
       return;
     }
 
-    const baseOffset = (lines.length - 1) / 2;
+    const baseOffset = ((lines.length - 1) * 1.2) / 2;
     lines.forEach((line, index) => {
       const tspan = createSvgElement('tspan', {
         x,
-        y,
-        dy: `${(index - baseOffset) * 1.2}em`,
+        dy: index === 0 ? `${-baseOffset}em` : '1.2em',
       });
       tspan.textContent = line || ' ';
       labelElement.appendChild(tspan);
     });
+
+    labelElement.setAttribute('y', String(y));
   }
 
   /**
